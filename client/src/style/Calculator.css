@@ -1,0 +1,80 @@
+.calculator-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.animation-section {
+  position: relative;
+  margin: 20px 0;
+}
+
+.venn-diagram {
+  position: relative;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.circle {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  border: 3px solid #232323;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 1s ease-in-out;
+}
+
+.circle-a {
+  background-color: rgba(85, 255, 0, 0.5);
+  left: 25%;
+  transform: translateX(-50%);
+}
+
+.circle-b {
+  background-color: rgba(0, 0, 255, 0.5);
+  right: 25%;
+  transform: translateX(50%);
+}
+
+/* Анимация для одинаковых элементов (полное наложение) */
+.venn-diagram.animate-same .circle-a,
+.venn-diagram.animate-same .circle-b {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+/* Анимация для частичного пересечения */
+.venn-diagram.animate-overlap .circle-a {
+  left: 40%;
+  transform: translateX(-50%);
+}
+
+.venn-diagram.animate-overlap .circle-b {
+  right: 40%;
+  transform: translateX(50%);
+}
+
+.label {
+  font-weight: bold;
+  font-size: 24px;
+  color: #000000;
+}
+
+.sets-display {
+  display: flex;
+  justify-content: center;
+  min-width: 900px;
+  gap: 14px;
+}
+
+.set-input {
+  flex: 1;
+}
+

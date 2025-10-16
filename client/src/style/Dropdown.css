@@ -1,0 +1,12 @@
+.no-arrow::after {
+  background-image: none !important;
+  display: none !important;
+}
+
+.no-arrow {
+  border: none !important;
+  font-size: large !important;
+  color: black !important;
+  padding-right: 0;
+  background-color: white !important;
+}
