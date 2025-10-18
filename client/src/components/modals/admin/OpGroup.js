@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const GroupModal = ({ show, onHide, onSubmit, initialValues, submitting }) => {
+const OpGroup = ({ show, onHide, onSubmit, initialValues, submitting }) => {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
 
@@ -64,4 +64,4 @@ const GroupModal = ({ show, onHide, onSubmit, initialValues, submitting }) => {
   )
 }
 
-export default GroupModal
+export default OpGroup
