@@ -56,7 +56,7 @@ const StudentResultTest = () => {
             </div>
           ) : (
             <div className="table-responsive">
-              <Table striped hover>
+              <Table hover>
                 <thead className="table-light">
                   <tr>
                     <th>Тест</th>

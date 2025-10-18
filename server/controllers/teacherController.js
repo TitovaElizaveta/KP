@@ -391,9 +391,6 @@ class TeacherController {
       switch (type) {
         case 'single':
         case 'many':
-          if (!options || !correctAnswer) {
-            return next(ApiError.badRequest('Для этого типа вопроса нужны options и correctAnswer'))
-          }
           const answerOptions = options.map((optionText, index) => {
             let isCorrect = false;
             if (type === 'single') {

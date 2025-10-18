@@ -61,7 +61,7 @@ const GroupModal = ({ show, onHide, onSubmit, initialValues, submitting }) => {
         </Button>
       </Modal.Footer>
     </Modal>
-  );
-};
+  )
+}
 
 export default GroupModal

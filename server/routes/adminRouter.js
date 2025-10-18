@@ -22,5 +22,4 @@ router.post('/groups', adminController.createGroup)
 router.put('/groups/:id', adminController.updateGroup)
 router.delete('/groups/:id', adminController.deleteGroup)
 
-
-module.exports = router; 
+module.exports = router 

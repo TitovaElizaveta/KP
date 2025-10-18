@@ -24,7 +24,7 @@ const StudentCourse = () => {
   return (
     <Container>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Мои курсы</h1>
+        <h1>Мои дисциплины</h1>
       </div>
       <Row>
         {courses.map(course => (
@@ -34,7 +34,7 @@ const StudentCourse = () => {
                 <Card.Title>{course.title}</Card.Title>
                 <div className="mt-auto">
                   <Button onClick={() => navigate(`/student/courses/${course.id}`)} className="w-100 mt-3">
-                    Перейти к курсу
+                    Перейти к дисциплине
                   </Button>
                 </div>
               </Card.Body>
@@ -46,7 +46,7 @@ const StudentCourse = () => {
       {courses.length === 0 && !error && (
         <Card className="text-center py-5">
           <Card.Body>
-            <h5 className="text-muted">Курсы не найдены</h5>
+            <h5 className="text-muted">Дисциплины не найдены</h5>
             <p className="text-muted mb-3">
               Вы еще не записаны ни на один курс. Обратитесь к преподавателю.
             </p>

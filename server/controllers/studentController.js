@@ -1,4 +1,4 @@
-const { Course, Theory, Test, TestAttempt, StudentAnswer, Question, AnswerOption, AnswerWrite, 
+const { Course, Theory, Test, TestAttempt, StudentAnswer, Question, AnswerOption, AnswerWrite,
   MatchPairs, Group, UserGroup, GroupCourse, CourseTest, TestQuestion, } = require('../models/models')
 const ApiError = require('../error/ApiError')
 const sequelize = require('../db')
@@ -36,7 +36,7 @@ class StudentController {
           }
         ]
       })
-      
+
       const formattedCourses = courses.map(course => ({
         id: course.id,
         title: course.title,
@@ -48,7 +48,7 @@ class StudentController {
       return next(ApiError.internal('Ошибка при получении курсов'))
     }
   }
-  
+
   async getCourseDetails(req, res, next) {
     try {
       const { id } = req.params
@@ -73,7 +73,7 @@ class StudentController {
       if (!groupCourse) {
         return next(ApiError.forbidden('Доступ к курсу запрещен'));
       }
-      
+
       const course = await Course.findByPk(id, {
         include: [
           {
@@ -134,7 +134,7 @@ class StudentController {
       return next(ApiError.internal('Ошибка при получении теории'))
     }
   }
-  
+
   async downloadTheory(req, res, next) {
     try {
       const { id } = req.params
@@ -143,7 +143,7 @@ class StudentController {
         where: { id_student: studentId },
         attributes: ['id_group']
       })
-      
+
       const groupIds = userGroups.map(ug => ug.id_group)
       const theory = await Theory.findOne({
         where: { id: id },
@@ -156,11 +156,11 @@ class StudentController {
           }]
         }]
       })
-      
+
       if (!theory) {
         return next(ApiError.notFound('Теория не найдена'))
       }
-      
+
       const filePath = path.join(__dirname, '../uploads', theory.filePath)
       if (!fs.existsSync(filePath)) {
         return next(ApiError.notFound('Файл не найден'))
@@ -199,9 +199,9 @@ class StudentController {
       }
 
       const theory = await Theory.findOne({
-        where: { 
+        where: {
           id: theoryId,
-          id_course: courseId 
+          id_course: courseId
         }
       })
 
@@ -210,7 +210,7 @@ class StudentController {
       }
 
       const filePath = path.join(__dirname, '../uploads', theory.filePath)
-    
+
       if (!fs.existsSync(filePath)) {
         return next(ApiError.notFound('Файл не найден'))
       }
@@ -296,7 +296,7 @@ class StudentController {
 
       const courseIds = groupCourses.map(gc => gc.id_course)
       const courseTest = await CourseTest.findOne({
-        where: { 
+        where: {
           id_test: id,
           id_course: courseIds
         }
@@ -305,7 +305,7 @@ class StudentController {
       if (!courseTest) {
         return res.status(403).json({ message: 'Доступ к тесту запрещен' });
       }
-      
+
       const test = await Test.findByPk(id);
       if (!test) {
         return res.status(404).json({ message: 'Тест не найден' });
@@ -368,7 +368,7 @@ class StudentController {
         })
       )
 
-      res.json({ 
+      res.json({
         attemptId: attempt.id,
         timeLimit: test.timeLimit,
         questions: formattedQuestions
@@ -378,7 +378,7 @@ class StudentController {
       return res.status(500).json({ message: 'Ошибка при начале теста' })
     }
   }
-  
+
   async saveAnswer(req, res, next) {
     try {
       const { attemptId, questionId, answer } = req.body
@@ -396,9 +396,9 @@ class StudentController {
       }
 
       const existingAnswer = await StudentAnswer.findOne({
-        where: { 
-          id_attempt: attemptId, 
-          id_question: questionId 
+        where: {
+          id_attempt: attemptId,
+          id_question: questionId
         }
       })
 
@@ -457,7 +457,7 @@ class StudentController {
 
       for (const answer of studentAnswers) {
         const question = questionMap[answer.id_question];
-      
+
         if (!question) {
           console.error(`Вопрос с ID ${answer.id_question} не найден в базе данных`)
           continue
@@ -479,7 +479,7 @@ class StudentController {
 
       const totalQuestions = testQuestions;
       const percentage = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0;
-    
+
       let grade;
       if (percentage >= 85) grade = 5;
       else if (percentage >= 70) grade = 4;
@@ -521,13 +521,13 @@ class StudentController {
         answer = studentAnswer
       }
 
-      switch (question.type){
+      switch (question.type) {
         case 'single':
           console.log('Проверка одиночного выбора');
           const correctSingle = await AnswerOption.findOne({
             where: { id_question: question.id, isCorrect: true }
           })
-        
+
           if (!correctSingle) {
             console.log('Правильный вариант не найден')
             return false
@@ -540,14 +540,14 @@ class StudentController {
             where: { id_question: question.id, isCorrect: true },
             attributes: ['id']
           })
-        
+
           const correctIds = correctMany.map(opt => opt.id.toString()).sort();
-          const studentIds = Array.isArray(answer) 
-            ? answer.map(id => id.toString()).sort() 
+          const studentIds = Array.isArray(answer)
+            ? answer.map(id => id.toString()).sort()
             : [answer.toString()].sort()
-            const resultMany = correctIds.length === studentIds.length && correctIds.every((val, index) => val === studentIds[index])
-            console.log(`Результат: ${resultMany}`)
-            return resultMany
+          const resultMany = correctIds.length === studentIds.length && correctIds.every((val, index) => val === studentIds[index])
+          console.log(`Результат: ${resultMany}`)
+          return resultMany
         case 'write':
           const correctWrite = await AnswerWrite.findOne({
             where: { id_question: question.id }
@@ -637,7 +637,7 @@ class StudentController {
 
       let testTitle = 'Неизвестный тест'
       let testDescription = ''
-    
+
       if (attempt.Test) {
         testTitle = attempt.Test.title;
         testDescription = attempt.Test.description || ''
@@ -713,7 +713,7 @@ class StudentController {
       })
       const courseIds = groupCourses.map(gc => gc.id_course)
       const courseTest = await CourseTest.findOne({
-        where: { 
+        where: {
           id_test: id,
           id_course: courseIds
         }
@@ -781,27 +781,47 @@ class StudentController {
           latestAttemptsMap.set(testId, attempt);
         }
       })
+
       const latestAttempts = Array.from(latestAttemptsMap.values())
       const attemptsWithDetails = await Promise.all(
         latestAttempts.map(async (attempt) => {
           const attemptData = attempt.get({ plain: true });
           let courseName = 'Неизвестный курс'
+          let deadline = null
+          let remainingAttempts = 0
+
           try {
             const courseTest = await CourseTest.findOne({
               where: { id_test: attempt.id_test }
             })
+
             if (courseTest) {
               const course = await Course.findByPk(courseTest.id_course);
               if (course) {
                 courseName = course.title;
               }
+
+              // Получаем дедлайн
+              deadline = courseTest.deadline;
+
+              // Вычисляем оставшиеся попытки
+              const attemptsCount = await TestAttempt.count({
+                where: {
+                  id_test: attempt.id_test,
+                  id_student: studentId
+                }
+              });
+              remainingAttempts = Math.max(0, courseTest.attemptsAllowed - attemptsCount);
             }
           } catch (error) {
             console.error('Error finding course:', error);
           }
+
           return {
             ...attemptData,
-            courseName
+            courseName,
+            deadline,
+            remainingAttempts
           }
         })
       )
@@ -817,14 +837,14 @@ class StudentController {
     try {
       const { id } = req.params
       const studentId = req.user.id
-  
+
       if (!id || isNaN(parseInt(id))) {
-      return next(ApiError.badRequest('Неверный ID попытки'))
+        return next(ApiError.badRequest('Неверный ID попытки'))
       }
 
       const attempt = await TestAttempt.findOne({
-        where: { 
-          id: parseInt(id), 
+        where: {
+          id: parseInt(id),
           id_student: studentId
         },
         include: [
@@ -835,18 +855,18 @@ class StudentController {
               model: Question,
               through: { attributes: [] },
               include: [
-                { 
-                  model: AnswerOption, 
+                {
+                  model: AnswerOption,
                   as: 'answerOptions',
                   attributes: ['id', 'text', 'isCorrect']
                 },
-                { 
-                  model: AnswerWrite, 
+                {
+                  model: AnswerWrite,
                   as: 'correctWrite',
                   attributes: ['id', 'correctText']
                 },
-                { 
-                  model: MatchPairs, 
+                {
+                  model: MatchPairs,
                   as: 'matchPairs',
                   attributes: ['id', 'leftItems', 'rightItems']
                 }
@@ -860,8 +880,8 @@ class StudentController {
         ]
       })
       if (!attempt) {
-      console.log('Attempt not found')
-      return next(ApiError.notFound('Попытка не найдена'))
+        console.log('Attempt not found')
+        return next(ApiError.notFound('Попытка не найдена'))
       }
 
       const attemptData = attempt.get({ plain: true })
@@ -870,7 +890,7 @@ class StudentController {
         const courseTest = await CourseTest.findOne({
           where: { id_test: attempt.id_test }
         })
-      
+
         if (courseTest && courseTest.id_course) {
           const course = await Course.findByPk(courseTest.id_course)
           if (course) {

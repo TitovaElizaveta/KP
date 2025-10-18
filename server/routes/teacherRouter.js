@@ -25,7 +25,7 @@ router.get('/questions/search', teacherController.searchQuestions)
 router.put('/questions/:questionId', teacherController.updateQuestion)
 router.delete('/questions/:questionId', teacherController.deleteQuestion)
 //тест
-router.get('/tests', teacherController.getMyTests)
+router.get('/tests', teacherController.getMyTests)                        
 router.get('/courses/:courseId/tests', teacherController.getCourseTests)
 router.post('/tests', teacherController.createTest)
 router.put('/tests/:id', teacherController.updateTest)
